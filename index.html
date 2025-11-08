@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Overlay Generator</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Roboto:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;700&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Open+Sans:ital,wght@0,400;0,700;1,400&family=Lato:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;700&family=Poppins:ital,wght@0,400;0,700&family=Fira+Code:wght@400;700&family=Source+Sans+Pro:ital,wght@0,400;0,700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="app.js"></script>
+</head>
+
+<body>
+    <div id="transformModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="transformModalTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="transformModalTitle">Transform Settings</h3>
+                <button id="closeModal" class="close-btn" type="button"
+                    aria-label="Close transform settings">&times;</button>
+            </div>
+            <div id="transformModalPanel" class="modal-body">
+                <span id="cropHorizontal">Left: 0 Right: 0</span>
+                <span id="cropVertical">Top: 0 Bottom: 0</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="app">
+        <aside class="panel" aria-label="Controls">
+            <h2>Overlay Generator</h2>
+            <div class="controls">
+                <div class="row">
+                    <label for="canvasWidth">OBS canvas width</label>
+                    <input type="number" id="canvasWidth" value="1920" min="1" />
+                </div>
+
+                <div class="row">
+                    <label for="canvasHeight">OBS canvas height</label>
+                    <input type="number" id="canvasHeight" value="1080" min="1" />
+                </div>
+
+                <div class="row">
+                    <label for="colour1">Primary colour</label>
+                    <div class="colour-wrap">
+                        <input type="text" id="colour1Text" class="hex" placeholder="#RRGGBB" />
+                        <input type="color" id="colour1" value="#ffb0c5" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="colour2">Secondary colour</label>
+                    <div class="colour-wrap">
+                        <input type="text" id="colour2Text" class="hex" placeholder="#RRGGBB" />
+                        <input type="color" id="colour2" value="#99cdf0" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="colour3">Highlight colour</label>
+                    <div class="colour-wrap">
+                        <input type="text" id="colour3Text" class="hex" placeholder="#RRGGBB" />
+                        <input type="color" id="colour3" value="#ffd54f" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="colourText">Text colour</label>
+                    <div class="colour-wrap">
+                        <input type="text" id="colourTextText" class="hex" placeholder="#RRGGBB" />
+                        <input type="color" id="colourText" value="#000000" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="pixelCount">Number of pixels</label>
+                    <div class="slider-controls">
+                        <input type="range" id="pixelCount" value="9" min="1" max="50" />
+                        <div class="value-badge" id="pixelCountValue">9</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="pixelHeight">Pixel height</label>
+                    <div class="slider-controls">
+                        <input type="range" id="pixelHeight" value="8" min="1" max="50" />
+                        <div class="value-badge" id="pixelHeightValue">8</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="overlayWidth">Overlay width</label>
+                    <select id="overlayWidth">
+                        <option value="60">60 blocks</option>
+                        <option value="30">30 blocks</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <label for="numberStyle">Number style</label>
+                    <select id="numberStyle">
+                        <option value="stacked">Stacked digits</option>
+                        <option value="compact">Compact (small prefix)</option>
+                        <option value="slackow">Slackow (stack tens)</option>
+                        <option value="normal">Normal (inline)</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <label for="opacityPixels">Opacity (pixels)</label>
+                    <div class="slider-controls">
+                        <input type="range" id="opacityPixels" value="100" min="0" max="100" />
+                        <div class="value-badge" id="opacityPixelsValue">100</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="opacityText">Opacity (text)</label>
+                    <div class="slider-controls">
+                        <input type="range" id="opacityText" value="100" min="0" max="100" />
+                        <div class="value-badge" id="opacityTextValue">100</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="textSize">Text size</label>
+                    <div class="slider-controls">
+                        <input type="range" id="textSize" value="40" min="10" max="200" />
+                        <div class="value-badge" id="textSizeValue">40</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label for="fontStyle">Font</label>
+                    <select id="fontStyle">
+                        <option value="Inter-400">Inter</option>
+                        <option value="Inter-700">Inter Bold</option>
+                        <option value="Roboto-400">Roboto</option>
+                        <option value="Roboto-700">Roboto Bold</option>
+                        <option value="Roboto-400i">Roboto Italic</option>
+                        <option value="Oswald-400">Oswald</option>
+                        <option value="Oswald-700">Oswald Bold</option>
+                        <option value="Montserrat-400">Montserrat</option>
+                        <option value="Montserrat-700">Montserrat Bold</option>
+                        <option value="Montserrat-400i">Montserrat Italic</option>
+                        <option value="Open Sans-400">Open Sans</option>
+                        <option value="Open Sans-700">Open Sans Bold</option>
+                        <option value="Open Sans-400i">Open Sans Italic</option>
+                        <option value="Lato-400">Lato</option>
+                        <option value="Lato-700">Lato Bold</option>
+                        <option value="Lato-400i">Lato Italic</option>
+                        <option value="JetBrains Mono-400">JetBrains Mono</option>
+                        <option value="JetBrains Mono-700">JetBrains Mono Bold</option>
+                        <option value="Papyrus-400">Papyrus</option>
+                        <option value="Papyrus-700">Papyrus Bold</option>
+                        <option value="Cozette-400">Cozette</option>
+                    </select>
+                </div>
+
+                <div class="button-row">
+                    <button class="primary" id="downloadBtn" type="button" onclick="downloadImage()"
+                        disabled>Download</button>
+                    <button class="ghost" id="resetBtn" type="button">Reset</button>
+                    <button class="ghost" id="toggleTransformBtn" type="button">Transform settings</button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="preview">
+            <div class="top-actions">
+                <div class="top-actions__title">Preview</div>
+                <div class="small">Canvas: <span id="currentCanvas">1920x1080</span></div>
+            </div>
+            <div class="canvas-wrap">
+                <canvas id="canvas" width="1280" height="720"></canvas>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
