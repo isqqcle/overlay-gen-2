@@ -443,7 +443,6 @@
         });
 
         const columns = pixels * 2;
-        const overlayPixelWidth = columns * pixelWidth;
         const centerX = canvasWidth / 2;
         const centerY = pixelY + pixelHeight / 2;
 
@@ -487,8 +486,10 @@
 
         const cropHorizontal = document.getElementById("cropHorizontal");
         const cropVertical = document.getElementById("cropVertical");
-        const cropLeft = Math.max(0, Math.round((canvasWidth - overlayPixelWidth) / 2));
-        const cropTop = Math.max(0, Math.round((canvasHeight - pixelHeight) / 2));
+        const centerWidth = !Number.isNaN(overlayWidth) && overlayWidth > 0 ? overlayWidth : 60;
+        const centerHeight = 580;
+        const cropLeft = Math.max(0, Math.round((canvasWidth - centerWidth) / 2));
+        const cropTop = Math.max(0, Math.round((canvasHeight - centerHeight) / 2));
         if (cropHorizontal) {
             cropHorizontal.textContent = `Left: ${cropLeft} Right: ${cropLeft}`;
         }
